@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quiz_app/core/services/secure_storage.dart';
 
 import '../bloc/exam_bloc.dart';
 
@@ -63,8 +64,6 @@ class _DropDownButtonState extends State<DropDownButton> {
                   if (value == null) {
                     return 'Guruhni tanlang!';
                   }
-
-
                   return null;
                 },
                 onChanged: (value) {
@@ -72,6 +71,7 @@ class _DropDownButtonState extends State<DropDownButton> {
                     selectedValue = value;
                     selectedIndex = state.groupModel.results
                         ?.indexWhere((element) => element.name == value);
+                    SecureStorage().write(key: "selected_index", value: selectedIndex.toString());
                   });
                 },
                 onSaved: (value) {

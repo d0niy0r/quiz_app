@@ -20,9 +20,9 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
 
     on<SendExamDataEvent>((event, emit) async{
       emit(ExamLoadingState());
-      final res = await ExamUseCase().call(ExamRepositoryImplement());
-      final groupRes = await res.getGroupData();
-      groupRes.fold((l) => emit(ExamErrorState(failure: l)), (r) => emit(ExamSuccessState(groupModel: r)));
+      final request = await ExamUseCase().call(ExamRepositoryImplement());
+      final examDataRequest = await request.sendExamData(fullName: event.name, groupId: event.groupId, themeId: event.themeId);
+      examDataRequest.fold((l) => emit(ExamErrorState(failure: l)), (r) => emit(ExamSuccessState(groupModel: r)));
     });
 
   }

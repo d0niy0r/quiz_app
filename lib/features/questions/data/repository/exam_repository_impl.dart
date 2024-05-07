@@ -15,7 +15,7 @@ class ExamRepositoryImplement extends ExamRepository {
   }
 
   @override
-  Future<Either<Failure, String>> sendExamData(
+  Future<Either<Failure, GroupModel>> sendExamData(
       {required String fullName,
       required int groupId,
       required int themeId}) async {
@@ -28,7 +28,7 @@ class ExamRepositoryImplement extends ExamRepository {
         },
         isHeader: true);
     if(request.isSuccess){
-      return const Right("");
+      return  Right(GroupModel.fromMap(request.response));
     }
     return Left(Failure(errorMsg: request.response.toString()));
   }
