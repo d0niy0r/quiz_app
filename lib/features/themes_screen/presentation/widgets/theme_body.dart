@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quiz_app/features/questions/presentation/pages/examScreen.dart';
 
+import '../../../exam/presentation/pages/examScreen.dart';
 import '../bloc/theme_bloc.dart';
 
 class ThemeBody extends StatefulWidget {

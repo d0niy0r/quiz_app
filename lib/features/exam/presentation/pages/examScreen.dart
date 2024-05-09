@@ -9,7 +9,6 @@ import '../widgets/exam_body.dart';
 
 class ExamPage extends StatelessWidget {
   final int id;
-
   ExamPage({Key? key, required this.id}) : super(key: key);
 
   @override

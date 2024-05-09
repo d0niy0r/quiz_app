@@ -16,3 +16,13 @@ final class ExamErrorState extends ExamState {
   final Failure failure;
   ExamErrorState({required this.failure});
 }
+
+final class ExamStartSuccessState extends ExamState {
+  final ExamStartModel examStartModel;
+  ExamStartSuccessState({required this.examStartModel});
+}
+
+final class ExamStartErrorState extends ExamState {
+  final Failure failure;
+  ExamStartErrorState({required this.failure});
+}

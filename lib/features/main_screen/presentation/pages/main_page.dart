@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/widgets/customBottomNavBar.dart';
+import '../../../rating/presentation/pages/rating.dart';
 import '../../../themes_screen/presentation/bloc/theme_bloc.dart';
 import '../../../themes_screen/presentation/pages/theme_screen.dart';
 
@@ -34,7 +35,7 @@ class _MainPageState extends State<MainPage> {
         index: currentIndex,
         children: const <Widget>[
           ThemePage(),
-          Text("data"),
+          RatingPage(),
         ],
       ),
       bottomNavigationBar: CustomBottomNavBar(
@@ -42,7 +43,8 @@ class _MainPageState extends State<MainPage> {
           setState(() {
             currentIndex = value;
           });
-        }, index: currentIndex,
+        },
+        index: currentIndex,
       ),
     );
   }

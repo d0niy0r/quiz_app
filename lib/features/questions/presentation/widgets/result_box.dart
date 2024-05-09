@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/styles/constants.dart';
+import '../../../main_screen/presentation/pages/main_page.dart';
+import '../../../rating/presentation/pages/rating.dart';
 
 class ResultBox extends StatelessWidget {
   const ResultBox(
@@ -43,10 +45,10 @@ class ResultBox extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               result == questionLength / 2
-                  ? "Almost there"
+                  ? "YAXSHI )"
                   : result < questionLength / 2
-                      ? "Try Again ?"
-                      : "Great!",
+                      ? "QAYTADAN ISHLASH KERE (( ?"
+                      : "Ajoyib!",
               style: TextStyle(
                 color: neutral,
                 fontSize: 18,
@@ -54,9 +56,14 @@ class ResultBox extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             InkWell(
-              onTap: onPressed,
+              onTap: (){
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => MainPage(startIndex: 1)),
+                      (route) => false,
+                );              },
               child: const Text(
-                "Start Over",
+                "REYTINGNI KURISH",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.blue, fontSize: 20, letterSpacing: 1.0),
               ),

@@ -1,6 +1,6 @@
-import 'package:quiz_app/features/questions/data/repository/exam_repository_impl.dart';
 
 import '../../../../main/usecase/usecase.dart';
+import '../../data/repository/exam_repository_impl.dart';
 
 
 class ExamUseCase extends UseCase<ExamRepositoryImplement, ExamRepositoryImplement>{

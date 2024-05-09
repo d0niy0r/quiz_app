@@ -1,16 +1,13 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quiz_app/features/questions/presentation/widgets/drop_down_button.dart';
-import 'package:quiz_app/features/questions/presentation/widgets/questionsScreen.dart';
+import 'package:quiz_app/features/exam/presentation/widgets/drop_down_button.dart';
+import 'package:quiz_app/features/questions/presentation/pages/questionsScreen.dart';
 
-import '../../../../core/services/secure_storage.dart';
 import '../../../../core/widgets/customButton.dart';
 import '../bloc/exam_bloc.dart';
 
 class ExamBody extends StatefulWidget {
   final int id;
-
   ExamBody({super.key, required this.id});
 
   @override
@@ -18,9 +15,17 @@ class ExamBody extends StatefulWidget {
 }
 
 class _ExamBodyState extends State<ExamBody> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
+
+  @override
+  void initState() {
+    context.read<ExamBloc>().add(GetGroupData());
+    super.initState();
+  }
+
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,25 +36,39 @@ class _ExamBodyState extends State<ExamBody> {
               content: Text(state.failure.errorMsg),
               backgroundColor: Colors.red.shade800));
         }
-        if (state is ExamSuccessState) {
+        if (state is ExamSuccessState) {}
+        if (state is ExamStartSuccessState) {
           name.text = "";
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => QuestionPage(
+                  id: widget.id ?? 0,
+                  participantId: state.examStartModel.id,
+                )),
+          );
+        }
+        if (state is ExamStartErrorState) {
+
         }
       },
       builder: (context, state) {
-        if(state is ExamLoadingState){
-          return const Center(child: CircularProgressIndicator());
-        }
         return SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+                SizedBox(height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.2),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: TextFormField(
                     controller: name,
-                    onTapOutside: (tab) => FocusScope.of(context).unfocus,
+                    onTapOutside: (tab) =>
+                    FocusScope
+                        .of(context)
+                        .unfocus,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Ismingizni kiriting!'; // Hata mesajı
@@ -61,13 +80,17 @@ class _ExamBodyState extends State<ExamBody> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide:
-                            const BorderSide(color: Colors.green, width: 2),
+                        const BorderSide(color: Colors.green, width: 2),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 16),
-                const DropDownButton(),
+                DropDownButton(
+                  selectedId: (int value) {
+                    currentIndex = value;
+                  },
+                ),
                 const SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -81,7 +104,7 @@ class _ExamBodyState extends State<ExamBody> {
                         if (_formKey.currentState!.validate()) {
                           context.read<ExamBloc>().add(SendExamDataEvent(
                               name: name.text,
-                              groupId: int.parse(SecureStorage().read(key: "selected_index") as String),
+                              groupId: currentIndex + 1,
                               themeId: widget.id
                           ));
                         }
@@ -104,7 +127,10 @@ class _ExamBodyState extends State<ExamBody> {
                       borderRadius: 12,
                       textSize: 18),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                SizedBox(height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.04),
               ],
             ),
           ),

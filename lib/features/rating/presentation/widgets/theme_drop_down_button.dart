@@ -1,39 +1,37 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quiz_app/core/services/secure_storage.dart';
 
-import '../bloc/exam_bloc.dart';
+import '../../../themes_screen/presentation/bloc/theme_bloc.dart';
 
-class DropDownButton extends StatefulWidget {
-  const DropDownButton({super.key});
+class ThemeDropDownButton extends StatefulWidget {
+  final ValueChanged<int> selectedId;
+
+  const ThemeDropDownButton({super.key, required this.selectedId});
 
   @override
-  State<DropDownButton> createState() => _DropDownButtonState();
+  State<ThemeDropDownButton> createState() => _ThemeDropDownButtonState();
 }
 
-class _DropDownButtonState extends State<DropDownButton> {
-  String? selectedValue;
-  int? selectedIndex;
+class _ThemeDropDownButtonState extends State<ThemeDropDownButton> {
+  int selectedIndex = 0;
 
   @override
   void initState() {
-    context.read<ExamBloc>().add(GetGroupData());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExamBloc, ExamState>(
+    return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
-        if (state is ExamSuccessState) {
+        if (state is ThemeSuccessState) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
-              width: 250,
-              height: 50,
+              width: 300,
+              height: 70,
               child: DropdownButtonFormField2<String>(
-                isExpanded: true,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(vertical: 16),
                   border: OutlineInputBorder(
@@ -42,23 +40,23 @@ class _DropDownButtonState extends State<DropDownButton> {
                   // Add more decoration..
                 ),
                 hint: const Text(
-                  'Select',
+                  'Mavzuni tanlang',
                   style: TextStyle(fontSize: 14),
                 ),
-                items: state.groupModel.results
+                items: state.themeModel.results
                     ?.asMap()
                     .entries
                     .map(
                       (entry) => DropdownMenuItem<String>(
-                    value: entry.value.name,
-                    child: Text(
-                      entry.value.name ?? "",
-                      style: const TextStyle(
-                        fontSize: 14,
+                        value: entry.value.name,
+                        child: Text(
+                          entry.value.name ?? "",
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )
+                    )
                     .toList(),
                 validator: (value) {
                   if (value == null) {
@@ -68,14 +66,11 @@ class _DropDownButtonState extends State<DropDownButton> {
                 },
                 onChanged: (value) {
                   setState(() {
-                    selectedValue = value;
-                    selectedIndex = state.groupModel.results
-                        ?.indexWhere((element) => element.name == value);
-                    SecureStorage().write(key: "selected_index", value: selectedIndex.toString());
+                    selectedIndex = state.themeModel.results
+                        !.indexWhere((element) => element.name == value);
+                    widget.selectedId(selectedIndex+1);
                   });
-                },
-                onSaved: (value) {
-                  selectedValue = value.toString();
+                  print(selectedIndex);
                 },
                 buttonStyleData: const ButtonStyleData(
                   padding: EdgeInsets.only(right: 8),
@@ -99,7 +94,7 @@ class _DropDownButtonState extends State<DropDownButton> {
             ),
           );
         }
-        if (state is ExamErrorState) {
+        if (state is ThemeErrorState) {
           return const Center(
             child: Text("error"),
           );
@@ -109,4 +104,3 @@ class _DropDownButtonState extends State<DropDownButton> {
     );
   }
 }
-

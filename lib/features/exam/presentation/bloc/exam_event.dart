@@ -11,5 +11,10 @@ final class SendExamDataEvent extends ExamEvent {
   final String name;
   final int groupId;
   final int themeId;
-  SendExamDataEvent( {required this.name, required this.groupId, required this.themeId,});
+
+  SendExamDataEvent({
+    required this.name,
+    required this.groupId,
+    required this.themeId,
+  });
 }
